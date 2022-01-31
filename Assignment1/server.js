@@ -3,11 +3,13 @@ var server = http.createServer(requestHandler);
 server.listen(process.env.PORT, process.env.IP, startHandler);
 
 function startHandler(){
+
     var addr = server.address();
     console.log('Server listening at', addr.address + ':' + addr.port);
 }
 
 function requestHandler(req, res){
+    
     try{
         let url = require('url');
         let url_parts = url.parse(req.url, true);
