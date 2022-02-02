@@ -77,22 +77,22 @@ function numCheck(query){
     throw Error('Expecting a start and end number');   
     }
   else{
-    let start = query['start'];
+    let start = parseInt(query['start']);
     let end = JSON.stringify(parseInt(query['end']) + 1);
     let result = ' ';
     result += '<p>'      
     for(let i = start; i < end; i++){
       if (i % 3 == 0 && i % 5 == 0){
         result += 'ThFi';
-  }else if(i % 3 == 0){
-    result += 'Th';
-  }else if(i % 5 == 0){
-    result += 'Fi';
-  }else{
-    result += (JSON.stringify(i));
-  } 
-    result += ' <br>';
-  }
+      }else if(i % 3 == 0){
+        result += 'Th';
+      }else if(i % 5 == 0){
+        result += 'Fi';
+      }else{
+        result += (JSON.stringify(i));
+      } 
+      result += ' <br>';
+    }
     result += ' </p>';
     return result;
   } 
