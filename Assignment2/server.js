@@ -40,8 +40,13 @@ function sort(req, res){
   if (req.session.favorites == undefined ){
     throw Error("no songs on your playlist");
   }
-  req.session.favorites = req.session.favorites.sort();
-  end(req, res);
+
+  let original = req.session.favorites;
+  let sorted = original.sort();
+  let result = {'songs' : sorted}
+  res.writeHead(200, {'Content-Type': 'application/json'});
+  res.write(JSON.stringify(result));
+  res.end('');
 }
 
 function add(req, res){
@@ -86,4 +91,4 @@ function end(req, res){
   res.writeHead(200, {'Content-Type': 'application/json'});
   res.write(JSON.stringify(result));
   res.end('');
-}
+}0
