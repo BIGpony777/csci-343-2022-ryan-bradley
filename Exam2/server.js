@@ -39,11 +39,11 @@ function list(req, res)
       writeResult(req, res, {'error' : err});
     else
     {
-      con.query("SELECT GIFT_NAME FROM GIFT", function (err, result, fields) 
+      con.query("SELECT GName FROM Gifts", function (err, result, fields) 
       {
 
         let final = [];
-        result.forEach(item => final.push(item.GIFT_NAME));
+        result.forEach(item => final.push(item.GName));
 
         if (err) 
           writeResult(req, res, {'error' : err});
@@ -80,17 +80,17 @@ function add(req, res)
         writeResult(req, res, {'error' : err});
       else
       {
-        con.query('INSERT INTO GIFT (GIFT_NAME) VALUES (?)', [req.query.gift], function (err, result, fields) 
+        con.query('INSERT INTO Gifts (GName) VALUES (?)', [req.query.gift], function (err, result, fields) 
         {
           if (err) 
             writeResult(req, res, {'error' : err});
           else
           {
-            con.query("SELECT GIFT_NAME FROM GIFT ORDER BY GIFT_NAME", function (err, result, fields) 
+            con.query("SELECT GName FROM Gifts ORDER BY GName", function (err, result, fields) 
             {
 
                 let final = [];
-        result.forEach(item => final.push(item.GIFT_NAME));
+        result.forEach(item => final.push(item.GName));
 
               if (err) 
                 writeResult(req, res, {'error' : err});
@@ -114,13 +114,13 @@ function clear(req, res)
       writeResult(req, res, {'error' : err});
     else
     {
-      con.query('DELETE FROM GIFT', function (err, result, fields) 
+      con.query('DELETE FROM Gifts', function (err, result, fields) 
       {
         if (err) 
           writeResult(req, res, {'error' : err});
         else
         {
-          con.query("SELECT GIFT_NAME FROM GIFT ORDER BY GIFT_NAME", function (err, result, fields) 
+          con.query("SELECT GName FROM Gifts ORDER BY GName", function (err, result, fields) 
           {
             if (err) 
               writeResult(req, res, {'error' : err});
@@ -160,8 +160,26 @@ function info(req, res){
     if(req.session.totalgifts == undefined){
         req.session.totalgifts = 0;
     }
+    var con = mysql.createConnection(conInfo);
+  con.connect(function(err) 
+  {
+    if (err) 
+      writeResult(req, res, {'error' : err});
+    else
+    {
+      con.query("SELECT COUNT(GName) AS totalGifts FROM Gifts", function (err, result, fields) 
+      {
+        if (err) 
+          writeResult(req, res, {'error' : err});
+        else
 
-    req.session.commandCount = req.session.commandCount - 1;
+        
+        req.session.commandCount = req.session.commandCount - 1;
+        writeResult(req, res, {'sessionVisits' : req.session.commandCount, 'sessionGiftsAdded': req.session.giftsadded, '': result});
+      });
+    }
+  });
 
-    writeResult(req, res, {'sessionVisits' : req.session.commandCount, 'sessionGiftsAdded': req.session.giftsadded, 'totalGifts': req.session.totalgifts});
+
+    
 }
