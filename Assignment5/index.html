@@ -1,0 +1,386 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">        
+        
+    </head>
+    <style>
+        #jumble
+        { cursor: crosshair; }
+    </style>
+    <body>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container" id="jumble">
+                <h4 class="display-4">Welcome to This!</h4>
+                <p class="lead">Despite being born from a family of wizards I have struggled with basic human calculations such as determining the number of possibilites of certain events based off
+                     of how many times and ways said event cant occur -thus I had to create a calculator to do so for me. I'm still awaiting my powers.</p>
+                
+                <p>This site is made to test your humanity against my up and coming wizardy, for each calculation you make it may reveal certain pieces of my dark past. If you're able to use my tools to determine magical outcomes you
+                    will be rewarded. Try to collect all six of the sacred divs.
+                </p>
+            </div>
+        </div> 
+        <div class="container">
+            <nav class="navbar navbar-light bg-light">
+                <a class="navbar-brand" href="#">
+                  <img src="https://static.tappedout.net/mtg-cards-2/unfinity/blood-crypt/femme_fatale-blood-crypt-unf-16418741540.png" width="40" height="30" class="d-inline-block align-top" alt="">
+                  Ryan's cool calculations
+                </a>
+                <button id='btn3Submit' type="button" class="btn btn-secondary">Hints</button>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="ddID" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Tools
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="ddID">
+                      <a class="dropdown-item" id = "tool1">Additional Operators</a>
+                      <a class="dropdown-item" id = "tool3">Binary Answer</a>
+                    </div>
+                  </div> 
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#myModal">Answers</button>
+              </nav>
+            <ul class="list-group">
+                <li class="list-group-item" id='secret1' style='display: none;'>Hint: Try making the calculator display cool numbers!</li>
+                <li class="list-group-item" id='secret2' style='display: none;'>Hint: Cool numbers constitute things such as a palindrome, "010101", or "12345"</li>
+                <li class="list-group-item" id='secret3' style='display: none;'>Hint: nPk = n!/(n-k)!</li>
+                <li class="list-group-item" id='secret4' style='display: none;'>Hint: nCk = n!/(n-k)!k!</li>
+                <li class="list-group-item" id='secret5' style='display: none;'>Hint: 777 is my favorite number</li>
+                <li class="list-group-item" id='secret6' style='display: none;'>Hint: Enable additional operators if you're lame.</li>
+                <li class="list-group-item" id='secret7' style='display: none;'>Hint: Actually this is really hard without additional operators. I couldn't do it.</li>
+                <li class="list-group-item" id='secret8' style='display: none;'>Hint: Why are you even still clicking this? I don't know go drink coffee.</li>
+                <li class="list-group-item" id='secret9' style='display: none;'>Hint: Trailblazer pride!!!!!</li>
+              </ul>
+
+            <form class="border border-primary p-3">
+                <div class="form-group">
+                    <label for="num1">n</label>
+                    <input type="number" class="form-control" id="num1" name="num1" placeholder="Enter a number">
+                </div>
+                <div class="form-group">
+                    <label for="num2">k</label>
+                    <input type="number" class="form-control" id="num2" name="num2" placeholder="Enter a number">
+                </div>
+                
+                <button id='btnSubmit' type="button" class="btn btn-primary float-right p-3">nPk</button>
+                <button id='btn5Submit' type="button" class="btn btn-primary float-right p-3">n^k</button>
+                <button id='btn2Submit' type="button" class="btn btn-primary float-right p-3">nCk</button>
+                <button id='cheat4' type="button" class="btn btn-primary float-right p-3" style = "display: none" >*</button>
+                <button id='cheat3' type="button" class="btn btn-primary float-right p-3" style = 'display: none;'>/</button>
+                <button id='cheat2' type="button" class="btn btn-primary float-right p-3" style = "display: none" >-</button>
+                <button id='cheat1' type="button" class="btn btn-primary float-right p-3" style = 'display: none;'>+</button>
+                <div class="clearfix"></div>
+            </form>  
+            
+            <div id='ansCard' class="card" style='display: none'>
+                <div class="card-body">
+                    <h5 class="card-title">Answer</h5>
+                    <p id='ans'></p>
+                </div>
+            </div>   
+
+            <div class="row p-2">
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card" id="prize1" style="display: none">
+                        <div class="card-body">
+                            <h5 class="card-title">NOTHING</h5>
+                            <p>If you are questioning the purpose of this website. The purpose it is actually "NOTHING". The purpose both contains and consists of truly "NOTHING"</p>
+                        </div>
+                    </div>                
+                </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card" id="prize2" style="display: none">
+                        <div class="card-body">
+                            <h5 class="card-title">SOMETHING</h5>
+                            <p>Make sure you have lots of fun! there are NO "somethings" in this "NOTHING"</p>
+                        </div>
+                    </div>                
+                </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card" id="prize3"style ="display: none">
+                        <div class="card-body">
+                            <h5 class="card-title">YO</h5>
+                            <p>perhaps I should watch a horror movie or something. oh yeah this is supposed to include
+                                stuff about me. I love apples and pizza and minecraft and league of legends and CS:GO
+                            </p>
+                        </div>
+                    </div>                
+                </div>     
+
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card" id="prize4" style="display: none">
+                        <div class="card-body">
+                            <h5 class="card-title">Hi!</h5>
+                            <p>Hey!!! It's ryan's friend I hope he gets 100 on this</p>
+                        </div>
+                    </div>                
+                </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card" id="prize5" style="display: none">
+                        <div class="card-body">
+                            <h5 class="card-title">LIE</h5>
+                            <p>That last one was a lie I wrote it I'm sorry.</p>
+                        </div>
+                    </div>                
+                </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card" id="prize6" style="display: none">
+                        <div class="card-body">
+                        <h5 class="card-title">GG</h5>
+                        <p>WP</p>
+                    </div>
+                </div>                
+                </div>            
+            </div>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>        
+        
+        <div id="myModal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark text-light">
+                        <h5 class="modal-title">Answers</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>bruhhhhhhg YOU THOUGHT I WOULD JUST GIVE YOU ANSWERS</p>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        
+        <script>
+            $(document).ready(function()
+            {
+            hintCount = 0;
+            hasDone = [];
+            ans = 0;
+            disBin = 0;
+            awards = 0;
+            set = [];
+                $('#tool1').click(function(){
+                    for(let i=0; i<5; i++){
+                        $('#cheat'+i.toString()).toggle(2000);
+                    }
+                });
+
+                $('#tool3').click(function(){
+                    if(disBin==0){
+                        disBin=1;
+                    }else{
+                        disBin=0;
+                    }
+                });
+
+                $('#cheat1').click(function(){
+                    let num1 = parseFloat($('#num1').val(), 10);
+                    let num2 = parseFloat($('#num2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer(num1+num2);
+                    }
+                    $('#ansCard').fadeIn(2000);
+                });
+
+                $('#cheat2').click(function(){
+                    let num1 = parseFloat($('#num1').val(), 10);
+                    let num2 = parseFloat($('#num2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer(num1-num2);
+                    }
+                    $('#ansCard').fadeIn(2000);
+                });
+
+                $('#cheat3').click(function(){
+                    let num1 = parseFloat($('#num1').val(), 10);
+                    let num2 = parseFloat($('#num2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer(num1/num2);
+                    }
+                    $('#ansCard').fadeIn(2000);
+                });
+
+                $('#cheat4').click(function(){
+                    let num1 = parseFloat($('#num1').val(), 10);
+                    let num2 = parseFloat($('#num2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer(num1*num2);}
+                    
+                    $('#ansCard').fadeIn(2000);
+                });
+
+
+                $('#btn3Submit').click(function() 
+                {
+                    hintCount ++;
+                    $('#secret'+hintCount.toString()).toggle(2000);
+                });
+
+                $('#btnSubmit').click(function() 
+                {
+                    let num1 = parseFloat($('#num1').val(), 10);
+                    let num2 = parseFloat($('#num2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer(factorial(num1)/factorial(num1-num2));
+                    }
+                    $('#ansCard').fadeIn(2000);
+                    
+                });
+                $('#btn5Submit').click(function() 
+                {
+                    let num1 = parseFloat($('#num1').val(), 10);
+                    let num2 = parseFloat($('#num2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer((Math.pow(num1, num2)));
+                    }
+                    $('#ansCard').fadeIn(2000);
+                });
+
+                $('#btn2Submit').click(function() 
+                {
+                    let num1 = parseFloat($('#num1').val(), 10);
+                    let num2 = parseFloat($('#num2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer(factorial(num1)/(factorial(num1-num2)*factorial(num2)));
+                    }
+                    $('#ansCard').fadeIn(2000);
+                });   
+            });
+            function answer(ans){
+                if(disBin==1){
+                    ans=ans.toString(2);
+                }
+                $('#ans').text(ans);
+                $('#ans').removeClass("text-danger");
+                if(hasDone[0] == null && isPalindrome(ans)==false && isOrderedAsc(ans)==false && isOrderedDesc(ans)==false && isAlternating(ans)==false && ans!=777){
+                    awards++;
+                    hasDone[0]=1;
+                }
+                if(isPalindrome(ans)==true && hasDone[1]==null){
+                awards++;
+                hasDone[1]=1;
+                }
+                if(isOrderedAsc(ans)==true && hasDone[2]==null){
+                awards++;
+                hasDone[2]=1;
+                }
+                if(isOrderedDesc(ans)==true && hasDone[3]==null){
+                awards++;
+                hasDone[3]=1;
+                }
+                if(isAlternating(ans)==true && hasDone[4]==null){
+                awards++;
+                hasDone[4]==1;
+                }
+                if(ans ==777 && hasDone[5]==null){
+                awards++;
+                hasDone[5]=1;
+                }
+                //I was way too proud of myself when i turned a switch into this, originally each case was just incrementing from 1 but i realized you could do it like this.
+                if(set[awards]==null){
+                    $('#prize'+awards.toString(10)).toggle(2000);
+                }set[awards]=1;}
+                // I started out solving nPk all in one function and it was super convoluted but i realized you could just make a factorial function and do the logic in the answer parameters.
+            function factorial(x){
+                let prod =1;
+                if(x ==0 || x ==1){
+                    return prod;
+                }
+                for(let i=x; i > 0; i--){
+                    prod *= i;
+                }
+                return prod;
+            }
+    
+            function isPalindrome(x){
+                let arr = toArray(x);
+                if(arr.length<5){return false};
+                let newArr = [];
+                let j = 0;
+                let length = arr.length;
+                let halfArr = [];
+
+                for(let f =0; f<length/2; f++){
+                halfArr.push(arr[f]);
+                };
+                if(length % 2==0){
+                j=1;
+                };
+                    for(let i = length-1; i >= (length/2)+j; i--){
+                        newArr.push(arr[i]);
+                    }
+                    //for some reason i couldnt just compare the two arrays even when using toString so i just made this
+                    for (let g = 0; g<newArr.length; g++){
+                    if(newArr[g]!== halfArr[g]){
+                        return false;
+                    }
+                    return true;
+                    }
+            }
+
+            function isOrderedAsc(x){
+            let arr = toArray(x);
+            if(arr.length<4){return false};
+            for(let i=0; i<arr.length; i++){
+                if(arr[i]>=arr[i+1]){
+                return false;
+                }
+            }
+            return true;
+            }
+
+            function isOrderedDesc(x){
+            let arr = toArray(x);
+            if(arr.length<4){return false};
+            for(let i=0; i<arr.length; i++){
+                if(arr[i]<=arr[i+1]){
+                return false;
+                }
+            }
+            return true;
+            }
+
+            function isAlternating(x){
+            let arr = toArray(x);
+            if(arr.length<5){return false};
+            for(let i=0; i<arr.length-2; i++){
+                if(arr[i]!=arr[i+2]){
+                return false;
+                }
+            }
+            return true;
+            }
+            //I didn't write this one myself ; )
+            function toArray(x){
+                let myArr = String(x).split("").map((x)=>{
+                    return Number(x)
+                })
+                return myArr;
+            }
+
+            function checkNums(num1, num2){
+                if (isNaN(num1) || isNaN(num2))
+                    {
+                        $('#ans').text("Error: please enter a number!"); 
+                        $('#ans').addClass("text-danger");
+                        return false;
+                    }
+                    return true;
+            }
+        </script>
+    </body>
+
+</html>
+
