@@ -1,0 +1,456 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">        
+    </head>
+    <style>
+        #jumble
+        { cursor: crosshair; }
+    </style>
+    <body>
+        <iframe width="100%" height="100" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/1181854702%3Fsecret_token%3Ds-R76pUp8h2cE&color=%23ff5500&auto_play=true&hide_related=false&show_comments=true&show_user=false&show_reposts=false&show_teaser=false&visual=false"></iframe><div style="font-size: 10px; color: #cccccc;line-break: anywhere;word-break: normal;overflow: hidden;white-space: nowrap;text-overflow: ellipsis; font-family: Interstate,Lucida Grande,Lucida Sans Unicode,Lucida Sans,Garuda,Verdana,Tahoma,sans-serif;font-weight: 100;"> </div>
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container" id="jumble">
+                <h4 class="display-4">Welcome to This!</h4>
+                <p class="lead">Despite being born from a family of wizards I have struggled with basic human calculations such as determining the number of possibilites of certain events based off
+                     of how many times and ways said event cant occur -thus I had to create a calculator to do so for me. I'm still awaiting my powers.</p>
+                <p>This site is made to test your humanity against my up and coming wizardy, for each calculation you make it may reveal certain pieces of my dark past. If you're able to use my tools to determine magical outcomes you
+                    will be rewarded. Try to collect all six of the sacred divs by making this calculator display interesting numbers.
+                </p>
+            </div>
+        </div> 
+        <div class="container">
+            <nav class="navbar navbar-light bg-light">
+                <a class="navbar-brand" href="#">
+                  <img src="https://static.tappedout.net/mtg-cards-2/unfinity/blood-crypt/femme_fatale-blood-crypt-unf-16418741540.png" width="40" height="30" class="d-inline-block align-top" alt="">
+                  Ryan's cool calculations
+                </a>
+                <button id='btn-3-Submit' type="button" class="btn btn-secondary">Hints</button>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="ddID" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Tools
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="ddID">
+                      <a class="dropdown-item" id = "tool-1">Additional Operators</a>
+                      <a class="dropdown-item" id = "tool-3">Binary Answer</a>
+                    </div>
+                  </div> 
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#my-Modal">Answers</button>
+              </nav>
+            <ul class="list-group">
+                <li class="list-group-item" id='secret-1' style='display: none;'>Hint: Try making the calculator display cool numbers!</li>
+                <li class="list-group-item" id='secret-2' style='display: none;'>Hint: Cool numbers constitute things such as a palindrome, "010101", or "12345"</li>
+                <li class="list-group-item" id='secret-3' style='display: none;'>Hint: nPk = n!/(n-k)!</li>
+                <li class="list-group-item" id='secret-4' style='display: none;'>Hint: nCk = n!/(n-k)!k!</li>
+                <li class="list-group-item" id='secret-5' style='display: none;'>Hint: 777 is my favorite number</li>
+                <li class="list-group-item" id='secret-6' style='display: none;'>Hint: Enable additional operators if you're lame.</li>
+                <li class="list-group-item" id='secret-7' style='display: none;'>Hint: Why are you even still clicking this? I don't know go drink coffee.</li>
+                <li class="list-group-item" id='secret-8' style='display: none;'>Hint: Trailblazer pride!!!!!</li>
+              </ul>
+
+            <form class="border border-primary p-3">
+                <div class="form-group">
+                    <label for="num1">n</label>
+                    <input type="number" class="form-control" id="num-1" name="num-1" placeholder="Enter a number">
+                </div>
+                <div class="form-group">
+                    <label for="num2">k</label>
+                    <input type="number" class="form-control" id="num-2" name="num2" placeholder="Enter a number">
+                </div>
+                
+                <button id='btn-Submit' type="button" class="btn btn-primary float-right p-3">nPk</button>
+                <button id='btn-5-Submit' type="button" class="btn btn-primary float-right p-3">n^k</button>
+                <button id='btn-2-Submit' type="button" class="btn btn-primary float-right p-3">nCk</button>
+                <button id='cheat-4' type="button" class="btn btn-primary float-right p-3" style = "display: none" >*</button>
+                <button id='cheat-3' type="button" class="btn btn-primary float-right p-3" style = 'display: none;'>/</button>
+                <button id='cheat-2' type="button" class="btn btn-primary float-right p-3" style = "display: none" >-</button>
+                <button id='cheat-1' type="button" class="btn btn-primary float-right p-3" style = 'display: none;'>+</button>
+                <div class="clearfix"></div>
+            </form>  
+            
+            <div id='ans-Card' class="card" style='display: none'>
+                <div class="card-body">
+                    <h5 class="card-title">Answer</h5>
+                    <p id='ans'></p>
+                </div>
+            </div>   
+
+            <div class="row p-2">
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card" id="prize-1" style="display: none">
+                        <img class="card-img-top p-2" id='im1'src='' alt="this is supposed to be a random magic card">
+                        <div class="card-body">
+                            <h5 class="card-title">16.6666666667%</h5>
+                        </div>
+                    </div>                
+                </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card" id="prize-2" style="display: none">
+                        <img class="card-img-top" id='im2'src='' alt="this is supposed to be a random magic card">
+                        <div class="card-body">
+                            <h5 class="card-title">33.3333333333%</h5>
+                        </div>
+                    </div>                
+                </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card" id="prize-3"style ="display: none">
+                        <img class="card-img-top" id='im3'src='' alt="this is supposed to be a random magic card">
+                        <div class="card-body">
+                            <h5 class="card-title">50%</h5>
+                        </div>
+                    </div>                
+                </div>     
+
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card" id="prize-4" style="display: none">
+                        <img class="card-img-top" id='im4'src='' alt="this is supposed to be a random magic card">
+                        <div class="card-body">
+                            <h5 class="card-title">66.6666666667%</h5>
+                        </div>
+                    </div>                
+                </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card" id="prize-5" style="display: none">
+                        <img class="card-img-top" id='im5'src='' alt="this is supposed to be a random magic card">
+                        <div class="card-body">
+                            <h5 class="card-title">83.3333333333%</h5>
+                        </div>
+                    </div>                
+                </div>
+
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="card" id="prize-6" style="display: none">
+                        <img class="card-img-top" id='im6'src='' alt="this is supposed to be a random magic card">
+                        <div class="card-body">
+                        <h5 class="card-title">100%</h5>
+                    </div>
+                </div>                
+                </div>            
+            </div>
+        </div>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>        
+        
+        <div id="my-Modal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark text-light">
+                        <h5 class="modal-title">Answers</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>Anything to the power of one is itself, make the calculator equal any positive number, a palindrome that is over 5 digits long, a number that ascends and is over 4 digits, a number that descends and is over 4 digits, an alternating number over 5 digits, and finally, my favorite number.
+                        </p>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        
+        <script>
+            //configuration starts with an array full of links to magic cards, later other keys and values are added
+            let configuration = {
+                card :[
+                    'https://static.tappedout.net/mtg-cards-2/modern-horizons-2/bone-shards/mtg-cards/_user-added/femme_fatale-bone-shards-mh2-16234814560.png',
+                    'https://static.tappedout.net/mtg-cards-2/modern-horizons-2/cabal-coffers/mtg-cards/_user-added/femme_fatale-cabal-coffers-mh2-16215625350.png',
+                    'https://static.tappedout.net/mtg-cards-2/modern-horizons-2/chatterstorm/mtg-cards/_user-added/femme_fatale-chatterstorm-mh2-16219932350.png',
+                    'https://static.tappedout.net/mtg-cards/_user-added/femme_fatale-counterspell-mh2-16215710560.png',
+                    'https://static.tappedout.net/mtg-cards-2/modern-horizons-2/dragons-rage-channeler/mtg-cards/_user-added/femme_fatale-dragons-rage-channeler-mh2-16221798300_9cpSALP.png',
+                    'https://static.tappedout.net/mtg-cards-2/modern-horizons-2/goblin-anarchomancer/mtg-cards/_user-added/femme_fatale-goblin-anarchomancer-mh2-16226778120_avJ2X6K.png',
+                    'https://static.tappedout.net/mtg-cards-2/modern-horizons-2/greed/mtg-cards/_user-added/femme_fatale-greed-mh2-16221806190_lrHZ70i.png',
+                    'https://static.tappedout.net/mtg-cards-2/modern-horizons-2/karmic-guide/mtg-cards/_user-added/femme_fatale-karmic-guide-mh2-16222621820_qqgg43E.png',
+                    'https://static.tappedout.net/mtg-cards-2/modern-horizons-2/kitchen-imp/mtg-cards/_user-added/femme_fatale-kitchen-imp-mh2-16219915860.png',
+                    'https://static.tappedout.net/mtg-cards-2/modern-horizons-2/nevinyrrals-disk/mtg-cards/_user-added/femme_fatale-nevinyrrals-disk-mh2-16222627170.png',
+                    'https://static.tappedout.net/mtg-cards-2/modern-horizons-2/persist/mtg-cards/_user-added/femme_fatale-persist-mh2-16222636780_3TMrBZV.png',
+                    'https://static.tappedout.net/mtg-cards-2/strixhaven/draconic-intervention/mtg-cards/_user-added/femme_fatale-draconic-intervention-stx-16173439310.png',
+                    'https://static.tappedout.net/mtg-cards-2/time-spiral-remastered/abrupt-decay/mtg-cards/_user-added/femme_fatale-abrupt-decay-tsr-16153607690.png',
+                    'https://static.tappedout.net/mtg-cards-2/time-spiral-remastered/ancestral-vision/mtg-cards/_user-added/femme_fatale-ancestral-vision-tsr-16147508230.png',
+                    'https://static.tappedout.net/mtg-cards-2/time-spiral-remastered/aven-mindcensor/mtg-cards/_user-added/femme_fatale-aven-mindcensor-tsr-16144025700.png',
+                    'https://static.tappedout.net/mtg-cards-2/time-spiral-remastered/baral-chief-of-compliance/mtg-cards/_user-added/femme_fatale-baral-chief-of-compliance-tsr-16153615200.png',
+                    'https://static.tappedout.net/mtg-cards-2/time-spiral-remastered/beast-within/mtg-cards/_user-added/femme_fatale-beast-within-tsr-16153623380.png',
+                    'https://static.tappedout.net/mtg-cards-2/time-spiral-remastered/bedlam-reveler/mtg-cards/_user-added/femme_fatale-bedlam-reveler-tsr-16153627460.png',
+                    'https://static.tappedout.net/mtg-cards-2/time-spiral-remastered/bloodbraid-elf/mtg-cards/_user-added/femme_fatale-bloodbraid-elf-tsr-16153628510.png',
+                    'https://static.tappedout.net/mtg-cards-2/time-spiral-remastered/chalice-of-the-void/mtg-cards/_user-added/femme_fatale-chalice-of-the-void-tsr-16153629500.png',
+                    'https://static.tappedout.net/mtg-cards-2/time-spiral-remastered/courser-of-kruphix/mtg-cards/_user-added/femme_fatale-courser-of-kruphix-tsr-16153632340.png',
+                    'https://static.tappedout.net/mtg-cards-2/time-spiral-remastered/cranial-plating/mtg-cards/_user-added/femme_fatale-cranial-plating-tsr-16153633460.png',
+                    'https://static.tappedout.net/mtg-cards-2/time-spiral-remastered/damnation/mtg-cards/_user-added/femme_fatale-damnation-tsr-16147526150.png',
+                    'https://static.tappedout.net/mtg-cards-2/zendikar-rising/bloodchiefs-thirst/mtg-cards/_user-added/femme_fatale-bloodchiefs-thirst-znr-15990918820.png',
+                    'https://static.tappedout.net/mtg-cards-2/zendikar-rising/forsaken-monument/mtg-cards/_user-added/femme_fatale-forsaken-monument-znr-15995212800.png',
+                    'https://static.tappedout.net/mtg-cards-2/zendikar-rising/lotus-cobra/mtg-cards/_user-added/beebles-lcc-15990268770.png',
+                    'https://static.tappedout.net/mtg-cards-2/zendikar-rising/roiling-vortex/mtg-cards/_user-added/femme_fatale-roiling-vortex-znr-15992779570.png',
+                    'https://static.tappedout.net/mtg-cards-2/core-set-2021/baneslayer-angel/mtg-cards/_user-added/femme_fatale-baneslayer-angel-m21-15914872200.png',
+                    'https://static.tappedout.net/mtg-cards-2/theros-beyond-death/anax-hardened-in-the-forge/mtg-cards/_user-added/femme_fatale-anax-hardened-in-the-forge-thb-15784325250.png',
+                    'https://static.tappedout.net/mtg-cards-2/war-of-the-spark/ashiok-dream-render/mtg-cards/_user-added/femme_fatale-ashiok-dream-render-war-15556283750.png',
+                    'https://static.tappedout.net/mtg-cards-2/war-of-the-spark/casualties-of-war/mtg-cards/_user-added/femme_fatale-casualties-of-war-war-15554761980.png',
+                    'https://static.tappedout.net/mtg-cards-2/core-set-2019/ajanis-welcome/mtg-cards/_user-added/femme_fatale-ajanis-welcome-m19-15347598600.png',
+                    'https://static.tappedout.net/mtg-cards-2/core-set-2019/ajani-adversary-of-tyrants/mtg-cards/_user-added/femme_fatale-ajani-adversary-of-tyrants-m19-15293552560.png'
+
+           ] };
+            
+            $(document).ready(function()
+            {
+                //this is the additional operators button, each cheat is it's own operator this toggles them on/off
+                $('#tool-1').click(function(){
+                    for(let i=0; i<5; i++){
+                        $('#cheat-'+i.toString()).toggle(2000);
+                    }
+                });
+
+                //this turns on binary answer which just displays your answer in binary- useful for the alternating and palindrome cases if youre using nPk and nCk
+                $('#tool-3').click(function(){
+                    if(configuration.disBin==undefined || 0){
+                        configuration.disBin=1;
+                    }else{
+                        configuration.disBin=0;
+                    }
+                });
+
+                //cheat 1-4 are just muliplication, addition, subtraction, division
+                $('#cheat-1').click(function(){
+                    let num1 = parseFloat($('#num-1').val(), 10);
+                    let num2 = parseFloat($('#num-2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer(num1+num2);
+                    }
+                    $('#ans-Card').fadeIn(2000);
+                });
+
+                $('#cheat-2').click(function(){
+                    let num1 = parseFloat($('#num-1').val(), 10);
+                    let num2 = parseFloat($('#num-2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer(num1-num2);
+                    }
+                    $('#ans-Card').fadeIn(2000);
+                });
+
+                $('#cheat-3').click(function(){
+                    let num1 = parseFloat($('#num-1').val(), 10);
+                    let num2 = parseFloat($('#num-2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer(num1/num2);
+                    }
+                    $('#ans-Card').fadeIn(2000);
+                });
+
+                $('#cheat-4').click(function(){
+                    let num1 = parseFloat($('#num-1').val(), 10);
+                    let num2 = parseFloat($('#num-2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer(num1*num2);}
+                    
+                    $('#ans-Card').fadeIn(2000);
+                });
+
+                //nPk
+                $('#btn-Submit').click(function() 
+                {
+                    let num1 = parseFloat($('#num-1').val(), 10);
+                    let num2 = parseFloat($('#num-2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer(factorial(num1)/factorial(num1-num2));
+                    }
+                    $('#ans-Card').fadeIn(2000);
+                    
+                });
+
+                //nCk
+                $('#btn-2-Submit').click(function() 
+                {
+                    let num1 = parseFloat($('#num-1').val(), 10);
+                    let num2 = parseFloat($('#num-2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer(factorial(num1)/(factorial(num1-num2)*factorial(num2)));
+                    }
+                    $('#ans-Card').fadeIn(2000);
+                }); 
+
+                //the hints button
+                $('#btn-3-Submit').click(function() 
+                {
+                    if(configuration.hintCount==undefined){
+                        configuration.hintCount=0;
+                    };
+                    configuration.hintCount ++;
+                    
+                    $('#secret-'+configuration.hintCount.toString()).toggle(2000);
+                });
+
+                //n to the power of k, I added this in because nPk and nCk were way too hard on their own.
+                $('#btn-5-Submit').click(function() 
+                {
+                    let num1 = parseFloat($('#num-1').val(), 10);
+                    let num2 = parseFloat($('#num-2').val(), 10);
+                    
+                    if(checkNums(num1, num2)==true){
+                        answer((Math.pow(num1, num2)));
+                    }
+                    $('#ans-Card').fadeIn(2000);
+                });
+  
+            });
+
+            //the answer function checks to see if your calculator's result matches any of the cases and displays a div if you solve a new number.
+            //it uses hasDone to see if the case has been solved before- awards to keep track of how many awards there are, and set to see if the div has been displayed
+            function answer(ans){
+                if(configuration.hasDone==undefined){
+                    configuration.hasDone=[];
+                }
+                if(configuration.awards==undefined){
+                    configuration.awards=0;
+                }
+                if(configuration.set==undefined){
+                    configuration.set=[];
+                }
+                console.log(configuration);
+                if(configuration.disBin==1){
+                    ans=ans.toString(2);
+                }
+                $('#ans').text(ans);
+                $('#ans').removeClass("text-danger");
+                if(configuration.hasDone[0] == undefined && isPalindrome(ans)==false && isOrderedAsc(ans)==false && isOrderedDesc(ans)==false && isAlternating(ans)==false && ans!=777){
+                    addAward();
+                    configuration.hasDone[0]=1;
+                }
+                if(isPalindrome(ans)==true && configuration.hasDone[1]==undefined){
+                    addAward();
+                    configuration.hasDone[1]=1;
+                }
+                if(isOrderedAsc(ans)==true && configuration.hasDone[2]==undefined){
+                    addAward();
+                    configuration.hasDone[2]=1;
+                }
+                if(isOrderedDesc(ans)==true && configuration.hasDone[3]==undefined){
+                    addAward();
+                    configuration.hasDone[3]=1;
+                }
+                if(isAlternating(ans)==true && configuration.hasDone[4]==undefined){
+                    addAward();
+                    configuration.hasDone[4]=1;
+                }
+                if(ans ==777 && configuration.hasDone[5]==undefined){
+                    addAward();
+                    configuration.hasDone[5]=1;
+                }
+                
+                //this was originally a switch on awards that toggled each prize that i turned into this
+                if(configuration.set[configuration.awards]==null){
+                    $('#prize-'+configuration.awards.toString(10)).toggle(2000);
+                }configuration.set[configuration.awards]=1;
+            }
+
+            //i originally had nPk in it's own function but this is a lot simpler
+            function factorial(x){
+                let prod =1;
+                if(x ==0 || x ==1){
+                    return prod;
+                }
+                for(let i=x; i > 0; i--){
+                    prod *= i;
+                }
+                return prod;
+            }
+
+            //add award gets a random magic card and increases what award you have
+            function addAward(){
+                configuration.awards++;
+                $('#im'+(configuration.awards).toString()).attr("src", configuration.card[(Math.floor(Math.random()*((configuration.card).length)))]);
+            }
+    
+            function isPalindrome(x){
+                let arr = toArray(x);
+                if(arr.length<5){return false};
+                let newArr = [];
+                let j = 0;
+                let length = arr.length;
+                let halfArr = [];
+
+                for(let f =0; f<length/2; f++){
+                    halfArr.push(arr[f]);
+                };
+                if(length % 2==0){
+                    j=1;
+                };
+                for(let i = length-1; i >= (length/2)+j; i--){
+                        newArr.push(arr[i]);
+                }
+                for (let g = 0; g<newArr.length; g++){
+                    if(newArr[g]!== halfArr[g]){
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            function isOrderedAsc(x){
+            let arr = toArray(x);
+            if(arr.length<4){return false};
+            for(let i=0; i<arr.length; i++){
+                if(arr[i]>=arr[i+1]){
+                    return false;
+                }
+            }
+            if(arr[arr.length-1]-arr[0]>arr.length-1){
+                return false;
+            }
+            return true;
+            }
+
+            function isOrderedDesc(x){
+            let arr = toArray(x);
+            if(arr.length<4){return false};
+            for(let i=0; i<arr.length; i++){
+                if(arr[i]<=arr[i+1]){
+                    return false;
+                }
+            }
+            if(arr[0]-arr[arr.length-1]>arr.length-1){
+                return false;
+            }
+            return true;
+            }
+
+            function isAlternating(x){
+            let arr = toArray(x);
+            if(arr.length<5){return false};
+            for(let i=0; i<arr.length-2; i++){
+                if(arr[i]!=arr[i+2]){
+                    return false;
+                }
+            }
+            return true;
+            }
+
+            //snagged this from google
+            function toArray(x){
+                let myArr = String(x).split("").map((x)=>{
+                    return Number(x)
+                })
+                return myArr;
+            }
+
+            function checkNums(num1, num2){
+                if (isNaN(num1) || isNaN(num2))
+                    {
+                        $('#ans').text("Error: please enter a number!"); 
+                        $('#ans').addClass("text-danger");
+                        return false;
+                    }
+                    return true;
+            }
+        </script>
+    </body>
+
+</html>
+
