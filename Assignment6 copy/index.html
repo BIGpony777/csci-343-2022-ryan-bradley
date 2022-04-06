@@ -1,0 +1,158 @@
+<html>
+    <head>
+        <link rel = "stylesheet" href = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity = "sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin = "anonymous">        
+     
+        <style>
+            /* put your css styles here...*/
+
+        </style>
+    </head>
+  
+    <body>
+        <h4>Treasure Hunt</h4>
+    
+        <div id = "main"></div>
+        <div class = "clearfix"></div>
+        <br>
+        <div id = "response"></div>
+        
+        <script src = "https://code.jquery.com/jquery-3.3.1.min.js" integrity = "sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin = "anonymous"></script>
+        <script src = "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity = "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin = "anonymous"></script>
+        <script src = "https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity = "sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin = "anonymous"></script>        
+        
+        <!--put your modal dialogs here...-->
+        <div id = "my-Modal" class = "modal" tabindex = "-1" role = "dialog">
+            <div class = "modal-dialog" role = "document">
+                <div class = "modal-content">
+                    <div class = "modal-header bg-dark text-light">
+                        <h5 class = "modal-title">Play Again?</h5>
+                    </div>
+                    <div class = "modal-body">
+                        <p>Would you like to play again?</p>
+                    </div>
+                    <div class = "modal-footer bg-dark">
+                        <button type = "button" class = "btn btn-primary" data-dismiss = "modal" id = "yes">Yes</button>
+                        <button type = "button" class = "btn btn-secondary" data-dismiss = "modal" id = "no">No</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        
+        <script>
+        /* global $ */
+        let no;
+        // put your JavaScript code here...
+        $(document).ready(function()
+        {
+           let size = 6;
+           let value = 1;
+           //add style for rows, cols, card, and card body
+            for(let i = 0; i < Math.floor(size / 2); i++){
+                $('#main').append('<div class = "row no-gutters" style = "height:200px"><div class = "col-sm no-gutters"><div class = "card " style = "height:200px"><div class = "card-body bg-dark" value = ' + value + '></div></div></div><div class = "col-sm"><div class = "card" style = "height:200px"><div class = "card-body bg-dark" value = ' + parseInt(value + 1, 10) + '></div></div></div></div>');
+                value += 2;
+            }
+            if(size % 2 == 1){
+                $('#main').append('<div class = "row" style = "height:200px"><div class = "col-sm"><div class = "card"style = "height:200px"><div class = "card-body bg-dark"value = ' + value + '></div></div></div>');
+            }
+            let txt = "Guesses: " + 0;              
+                    $("#response").text(txt);
+            // model...
+            let model = {};
+
+            function initializeModel()
+            {
+                model.error = "";
+                model.gameStatus = "";
+                model.guesses = 0;
+                model.card;
+                model.ready;
+            }
+            
+            // view...
+            function updateView()
+            {
+               if (model.error != "")
+               {
+                    $("#response").text(model.error);
+                }
+               else
+               {
+                   if(model.gameStatus != ''){
+                    txt = "Guesses: " + model.guesses;              
+                    $("#response").text(txt);
+                    model.card.removeClass('bg-dark');
+                    model.card.addClass('bg-success');
+                    $('#my-Modal').modal('show');
+                   }else{
+                    model.card.removeClass('bg-dark');
+                    model.card.addClass('bg-danger');
+                    txt = "Guesses: " + model.guesses;              
+                    $("#response").text(txt);
+                   }
+               }
+                
+            }
+
+            //win screen...
+            $('#yes').click(function()
+            {
+                $('.card-body').removeClass('bg-danger');
+                $('.card-body').addClass('bg-dark');
+                model.ready = undefined;
+                model.guesses = 0;
+                txt = "Guesses: " + model.guesses;              
+                    $("#response").text(txt);
+
+            });
+
+            $('#no').click(function()
+            {
+                no = 1;
+            });
+            
+            // controller...
+            $('.card-body').click(function() 
+            {
+                if(no != 1){
+                model.card = $(this);
+                let url;
+                if(model.card.hasClass('bg-danger') != true){
+                    if(model.ready == undefined){
+                        url = 'game?max=' + size.toString(10) + '&guess=' + $(this).attr('value');
+                        model.ready = 1;
+                    }else if(model.ready == 1){
+                        url = 'game?guess=' + $(this).attr('value');
+                    }
+                var jqxhr = $.get(url);
+                jqxhr.done(function(json) 
+                {
+                    model.gameStatus = "";
+                    if (json.error !== undefined)
+                    {
+                        model.error = json.error;
+                    }
+                    else
+                    {
+                        model.gameStatus = json.gameStatus;
+                        model.guesses = json.guesses;
+                    }
+                    updateView();
+                })
+                jqxhr.fail(function(json) 
+                {
+                    let error = JSON.stringify(json);
+                    model.error = error;
+                    updateView();
+                })}}
+            });
+        
+            
+            // run...
+            initializeModel();
+            updateView();
+        });        
+            
+        </script>
+    </body>
+
+</html>
