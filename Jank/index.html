@@ -1,0 +1,127 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">        
+        
+        <style>
+            /* put your css styles here...*/
+
+        </style>
+    </head>
+    
+    <body>
+        <h4>Treasure Hunt</h4>
+        
+        <div class="container" id ="main">
+            <div class="row"><div class="col-xl-3 col-lg-4 col-md-6 col-sm-12"><div class="card" ><div class="card-body bg-dark"></div></div></div><div class="col-xl-3 col-lg-4 col-md-6 col-sm-12"><div class="card"><div class="card-body bg-dark" ></div></div></div></div>
+          </div>
+          <div class="clearfix"></div>
+<br>
+        <div id="response"></div>
+        
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>        
+        
+        <!--put your modal dialogs here...-->
+        <div id="my-Modal" class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header bg-dark text-light">
+                        <h5 class="modal-title">Play Again?</h5>
+                    </div>
+                    <div class="modal-body">
+                        <p>You won
+                        </p>
+                    </div>
+                    <div class="modal-footer bg-dark">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Yes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+        
+        <script>
+        /* global $ */
+        // put your JavaScript code here...
+        $(document).ready(function() 
+        {
+           let size =0;
+           let changes =0;
+            for(let i=0; i<size/2; i++){
+                $('#main').append('<div class="row"><div class="col-sm"><div class="card"><div class="card-body bg-dark"></div></div></div><div class="col-sm"><div class="card"><div class="card-body bg-dark" ></div></div></div></div>');
+            }
+            // model...
+            let model = {};
+
+            function initializeModel()
+            {
+                model.error = "";
+                model.gameStatus = "";
+                model.guesses = "";
+            }
+            
+            // view...
+            function updateView()
+            {
+               if (model.error != "")
+               {
+                    $("#response").text(model.error);
+                }
+               else
+               {
+                   if(model.gameStatus != ''){
+                    $('#my-Modal').modal('show');
+                    size += changes;
+                    changes =0;
+                   }else{
+                    
+                   }
+                    let txt = "Guesses: " + model.guesses;                    
+                    $("#response").text(txt);
+               }
+                
+            }
+            
+            // controller...
+            $('.card').click(function() 
+            {
+                let url = 'game?guess='+size.toString(10);
+                console.log(url);
+                var jqxhr = $.get(url);
+                jqxhr.done(function(json) 
+                {
+                    model.gameStatus = "";
+                    if (json.error !== undefined)
+                    {
+                        model.error = json.error;
+                    }
+                    else
+                    {
+                        model.gameStatus = json.gameStatus;
+                        model.guesses = json.guesses;
+                    }
+                    if(model.gameStatus!="won"){
+                        
+                    }
+                    updateView();
+                })
+                jqxhr.fail(function(json) 
+                {
+                    let error = JSON.stringify(json);
+                    model.error = error;
+                    updateView();
+                })
+                size--;
+                changes++;
+            });
+            
+            // run...
+            initializeModel();
+            updateView();
+        });        
+            
+        </script>
+    </body>
+
+</html>
