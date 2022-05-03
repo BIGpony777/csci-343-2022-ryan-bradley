@@ -28,18 +28,20 @@ const sessionOptions = {
   secret: "happy jungle",
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 600000 }
+  cookie: { maxAge: 6000000000000 }
 };
 app.use(session(sessionOptions));
 
 app.get("/", serveIndex);
 app.get("/game", game);
-app.all('/register', register);
-app.all('/login', login);
-app.all('/logout', logout);
-app.all('/addScore', addScore);    
-app.all('/listScores', listScores);
-app.all('/clearScores', clear);
+app.get('/register', register);
+app.get('/login', login);
+app.get('/logout', logout);
+app.get('/addScore', addScore);    
+app.get('/listScores', listScores);
+app.get('/clearScores', clear);
+app.get('/isLogged',isLogged);
+app.get('/listStats', listStats)
 
 app.listen(3000,  process.env.IP, startHandler());
 
@@ -52,11 +54,10 @@ function game(req, res) {
 
   try {
     if (!req.session.answer) { resetGame(req); }
-
-    if (req.query.guess == undefined) {
+    if(req.query.max == undefined && req.session.answer == undefined){
       resetGame(req);
     }
-    if(req.query.max==undefined&&req.session.answer==undefined){
+    if (req.query.guess == undefined) {
       resetGame(req);
     }
     else {
@@ -71,7 +72,7 @@ function game(req, res) {
 }
 
 function resetGame(req) {
-  
+  req.session.condition = req.query.condition;
   req.session.guesses = 0;
   req.session.answer = Math.floor(Math.random() * req.query.max)+1;
   console.log(req.session.answer);
@@ -79,8 +80,12 @@ function resetGame(req) {
 
 function evaluateGuess(req, res) {
 
+
   if(isGuessCorrect(req)) {
     result = winGame(req, res);
+  }
+  else if(req.session.guesses>req.session.condition-2){
+    result = loseGame(req,res);
   }
   else {
     incrementGuesses(req);
@@ -96,7 +101,16 @@ function isGuessCorrect(req) {
 
 function winGame(req, res) {
   incrementGuesses(req);
+  req.session.gameStatus="won";
   result = {gameStatus: "won", guesses: req.session.guesses}
+  req.session.answer = undefined;
+  return result;
+}
+
+function loseGame(req, res){
+  incrementGuesses(req);
+  req.session.gameStatus="lost";
+  result = {gameStatus: "lost", guesses: req.session.guesses}
   req.session.answer = undefined;
   return result;
 }
@@ -109,11 +123,13 @@ function register(req, res){
     if (req.query.email == undefined || !validateEmail(req.query.email))
     {
       writeResult(res, {'error' : "Please specify a valid email"});
+      return;
     }
 
     if (req.query.password == undefined || !validatePassword(req.query.password))
     {
       writeResult(res, {'error' : "Password must have a minimum of eight characters, at least one letter and one number"});
+      return;
     }
 
     let hash = bcrypt.hashSync(req.query.password, 12);
@@ -125,7 +141,7 @@ function register(req, res){
         {
             err = "User account already exists.";
         }
-        writeResult(req, res, {'error' : err});
+        writeResult(res, {'error' : err});
         }
         else
         {
@@ -137,8 +153,7 @@ function register(req, res){
             }else
             {
               req.session.user = {'result' : {'id': result[0].Id, 'email': result[0].Email}};
-              console.log(req.session.user);
-              writeResult(req, res, req.session.user);
+              writeResult(res, req.session.user);
             }
           });
         }
@@ -160,6 +175,7 @@ function login(req, res){
     {
       if (err) 
         writeResult(res, {'error' : err});
+        
       else
       {
         if(result.length == 1 && bcrypt.compareSync(req.query.password, result[0].Pass))
@@ -207,23 +223,20 @@ function validatePassword(pass)
     }
   }
 
-  function addScore(req, res)
+function addScore(req, res)
   {
 
-    console.log(3);
-    isLogged(req,res);
-
     if(req.query.score == undefined){
-      writeResult(req, res, {'error': 'input a score'})
+      writeResult(res, {'error': 'input a score'})
     }
 
-    con.query('INSERT INTO Scores (GuessAmt, Id) VALUES (?, ?)', [req.query.score, req.session.user.result.id], function (err, result, fields) 
+    con.query('INSERT INTO Scores (GuessAmt, GameStatus, AllowedGuesses, Id) VALUES (?,?,?,?)', [req.query.score, req.session.gameStatus, req.session.condition, req.session.user.result.id], function (err, result, fields) 
     {
       if (err) 
-        writeResult(req, res, {'error' : err});
+        writeResult(res, {'error' : err});
       else
       {
-        
+        console.log(3);
             writeResult(res, {'result': result});
           }
           
@@ -232,16 +245,31 @@ function validatePassword(pass)
   }
 
 function listScores(req, res){
-  isLogged(req, res);
-
-  con.query("SELECT Sid AS scoreId, Id AS userId, GuessAmt AS scoreName FROM Songs WHERE Id = ? ORDER BY Sid", [req.session.user.result.id], function (err, result){
+  
+  con.query("SELECT Sid as Game, GuessAmt AS score, GameStatus, AllowedGuesses FROM Scores WHERE Id = ? ORDER BY Sid DESC", [req.session.user.result.id], function (err, result){
     if(err)
     {
-      writeResult(req, res, {'error': err});
+      writeResult(res, {'error': err});
     }
     else
     {
-      writeResult(req, res, {'result': result});
+      writeResult(res, {'result': result});
+    }
+  })
+}
+
+function listStats(req, res){
+  
+  con.query("SELECT COUNT(Sid) as Games, MIN(GuessAmt) AS highscorescore FROM Scores WHERE Id = ?", [req.session.user.result.id], function (err, result){
+    if(err)
+    {
+      console.log(err)
+      writeResult(res, {'error': err});
+    }
+    else
+    {
+      console.log('good')
+      writeResult(res, {'result': result});
     }
   })
 }
@@ -256,15 +284,21 @@ function clear(req, res)
       writeResult(res, {'error' : err});
     else
     {
-      listSongs(req, res);
+      listSongs(res);
     }
   });
 }
 
 function isLogged(req, res)
 {
+  console.log(req.session.user);
   if(req.session.user == undefined){
-    writeResult(req, res, {'error': 'no one is currently logged in'})
+    writeResult(res, {'error': "Nobody is logged in."});
+  }
+    
+  else{
+    console.log(req.session.user);
+    writeResult(res, req.session.user.result);
   }
 }
 
@@ -275,7 +309,7 @@ function writeResult(res, result) {
 
 function serveIndex(req, res){
     res.writeHead(200, {'Content-Type': 'text/html'});
-    var index = fs.readFileSync('index.html');
+    const index = fs.readFileSync('index.html');
     res.end(index);
 }
 
